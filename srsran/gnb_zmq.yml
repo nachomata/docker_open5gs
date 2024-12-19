@@ -53,3 +53,8 @@ pcap:
   e2ap_du_filename: /mnt/srsran/du_e2ap.pcap                                                  # Path where E2AP CU PCAP is stored.
   n3_enable: false                                                                            # Set to true to enable N3 PCAPs.
   n3_filename: /mnt/srsran/gnb_n3.pcap                                                        # Path where the N3 PCAP is stored.
+
+metrics:
+  enable_json_metrics: true
+  addr: METRICS_SERVER_IP                                                                     # Metrics-server IP
+  port: METRICS_SERVER_PORT                                                                   # Metrics-server Port
