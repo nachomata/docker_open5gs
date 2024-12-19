@@ -48,8 +48,8 @@ services:
       - .env
     restart: on-failure:10
     # Uncomment port section to access InfluxDB from outside the docker network
-    # ports:
-    #   - 8086:${DOCKER_INFLUXDB_INIT_PORT}
+    ports:
+      - 8086:${DOCKER_INFLUXDB_INIT_PORT}
     networks:
       default:
         ipv4_address: ${DOCKER_INFLUXDB_IP}
