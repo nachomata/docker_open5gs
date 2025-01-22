@@ -26,19 +26,21 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+export PATH="/usr/local/go/bin:${PATH}"
+export PATH=$(go env GOPATH)/bin:${PATH}
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
+export IF_NAME=$(ip r | awk '/default/ { print $5 }')
 
-cp /mnt/ueransim/open5gs-ue.yaml /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|MNC|'$MNC'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|MCC|'$MCC'|g' /UERANSIM/config/open5gs-ue.yaml
-
-sed -i 's|UE1_KI|'$UE1_KI'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|UE1_OP|'$UE1_OP'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|UE1_AMF|'$UE1_AMF'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|UE1_IMEISV|'$UE1_IMEISV'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|UE1_IMEI|'$UE1_IMEI'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|UE1_IMSI|'$UE1_IMSI'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|NR_GNB_IP|'$NR_GNB_IP'|g' /UERANSIM/config/open5gs-ue.yaml
+exec ./bin/eupf \
+    --iface $IF_NAME \
+    --aaddr $UPF_IP:8181 \
+    --paddr $UPF_IP:8805 \
+    --maddr $UPF_IP:9091 \
+    --nodeid $UPF_IP \
+    --ueip false \
+    --ftup false \
+    --loglvl info \
+    --n3addr $UPF_ADVERTISE_IP $@
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
